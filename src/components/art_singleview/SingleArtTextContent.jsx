@@ -2,6 +2,7 @@
 //Art Single View Text Content
 
 import Link from "next/link";
+import Skeleton from "react-loading-skeleton";
 
 //Rydder op i colors (Fået hjælp af AI)
 function hexToHSL(hex) {

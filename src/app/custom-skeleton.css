@@ -1,0 +1,18 @@
+/*Custom sceleton fil*/
+
+/* Gør shimmer gradient smallere */
+.react-loading-skeleton::after {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(253, 253, 253, 0.5) 45%,
+    /* narrower highlight */ rgba(253, 253, 253, 0.8) 50%,
+    rgba(253, 253, 253, 0.5) 55%,
+    /* narrower highlight */ rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Gør shimmer animation langsommere */
+.react-loading-skeleton {
+  animation-duration: 20s !important; /* standard er ca 1.5s, gør den langsommere */
+}
