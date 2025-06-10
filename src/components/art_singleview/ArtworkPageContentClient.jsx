@@ -12,11 +12,12 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
   const router = useRouter();
 
   const handleBackClick = () => {
-    console.log("Navigerer tilbage til event:", eventId);
     if (eventId) {
       router.push(`/events/${eventId}`);
+    } else if (window.history.length > 1) {
+      router.back();
     } else {
-      router.push("/events");
+      router.push("/events"); // fallback hvis der ikke er nogen historik
     }
   };
 
@@ -33,61 +34,49 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Tilbage knap fjernes fra related singleart */}
-      {eventId && (
-        <div className="sticky top-10 bg-white w-fit lg:hidden cursor-pointer mt-4">
-          {/* <BtnWithArrow direction="left" onClick={handleBackClick}>
-            <span className="uppercase text-left block">{`Tilbage til ${
-              currentEvent?.title || "event"
-            }`}</span>
-          </BtnWithArrow> */}
-          <BtnWithArrow direction="left" onClick={handleBackClick}>
-            <span className="uppercase text-left block">
-              Tilbage til{" "}
-              <span className="font-semibold">
-                {currentEvent?.title || "event"}
-              </span>
-            </span>
-          </BtnWithArrow>
-        </div>
-      )}
-
-      {eventId && (
-        <div className="lg:col-span-4 self-start lg:sticky top-10">
-          <div className="sticky top-10 bg-white w-fit cursor-pointer hidden lg:block mb-4">
-            {/* <BtnWithArrow direction="left" onClick={handleBackClick}>
-              <span className="uppercase text-left block">{`Tilbage til ${
-                currentEvent?.title || "event"
-              }`}</span>
-            </BtnWithArrow> */}
-            <BtnWithArrow direction="left" onClick={handleBackClick}>
-              <span className="uppercase text-left block">
+      {/*mobil*/}
+      <div className="sticky top-10 pb-3 pr-2 rounded-sm bg-white w-fit lg:hidden cursor-pointer mt-4">
+        <BtnWithArrow direction="left" onClick={handleBackClick}>
+          <span className="uppercase text-left block">
+            {eventId ? (
+              <>
                 Tilbage til{" "}
                 <span className="font-semibold">
                   {currentEvent?.title || "event"}
                 </span>
-              </span>
-            </BtnWithArrow>
-          </div>
-          <SingleArtTextContent
-            data={artwork}
-            allEvents={events}
-            eventId={eventId}
-            onlyMeta={true}
-          />
+              </>
+            ) : (
+              "Tilbage til værk"
+            )}
+          </span>
+        </BtnWithArrow>
+      </div>
+
+      <div className="lg:col-span-4 self-start lg:sticky top-10">
+        {/*desktop*/}
+        <div className="sticky top-10 pb-3 pr-2 rounded-sm bg-white w-fit cursor-pointer hidden lg:block mb-4">
+          <BtnWithArrow direction="left" onClick={handleBackClick}>
+            <span className="uppercase text-left block">
+              {eventId ? (
+                <>
+                  Tilbage til{" "}
+                  <span className="font-semibold">
+                    {currentEvent?.title || "event"}
+                  </span>
+                </>
+              ) : (
+                "Tilbage til værk"
+              )}
+            </span>
+          </BtnWithArrow>
         </div>
-      )}
-      {/* Sørger for at sticky text til venstre ikke styles anderledes */}
-      {!eventId && (
-        <div className="lg:col-span-4 self-start lg:sticky top-10">
-          <SingleArtTextContent
-            data={artwork}
-            allEvents={events}
-            eventId={eventId}
-            onlyMeta={true}
-          />
-        </div>
-      )}
+        <SingleArtTextContent
+          data={artwork}
+          allEvents={events}
+          eventId={eventId}
+          onlyMeta={true}
+        />
+      </div>
 
       <div className="lg:col-span-8 space-y-8">
         <div>
