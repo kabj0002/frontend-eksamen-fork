@@ -28,7 +28,7 @@ const BtnWithArrow = ({
   children,
   direction = "right",
   toggleable = false,
-  onClick, // <-- Tilføj
+  onClick,
 }) => {
   const [toggled, setToggled] = useState(false);
 
@@ -36,23 +36,25 @@ const BtnWithArrow = ({
 
   const handleClick = (e) => {
     if (toggleable) setToggled((prev) => !prev);
-    if (onClick) onClick(e); // <-- Kald den eksterne onClick
+    if (onClick) onClick(e); // <-- Kalder den eksterne onClick
   };
 
   return (
     <button
       onClick={handleClick}
-      className="text-sm sm:text-md md:text-lg group inline-flex items-center gap-2 text-primary-red transform"
+      className="text-sm sm:text-md md:text-lg group inline-flex gap-2 text-primary-red transform"
     >
       {isLeft && (
-        <div className="relative h-1 w-6 transition-all duration-300 group-hover:w-10">
+        <div className="relative translate-y-[0.5em] h-1 w-6 transition-all duration-300 group-hover:w-10">
           <span className="absolute top-1/2 right-0 h-0.5 w-full bg-primary-red transform -translate-y-1/2" />
           <span className="absolute top-1/2 left-0 w-2 h-2 border-t-2 border-l-2 border-primary-red transform -rotate-45 translate-y-[-50%]" />
         </div>
       )}
-      <span>{children}</span>
+
+      <span className="text-left leading-tight">{children}</span>
+
       {!isLeft && (
-        <div className="relative h-1 w-6 transition-all duration-300 group-hover:w-10">
+        <div className="relative translate-y-[0.5em] h-1 w-6 transition-all duration-300 group-hover:w-10">
           <span className="absolute top-1/2 left-0 h-0.5 w-full bg-primary-red transform -translate-y-1/2" />
           <span className="absolute top-1/2 right-0 w-2 h-2 border-t-2 border-r-2 border-primary-red transform rotate-45 translate-y-[-50%]" />
         </div>

@@ -36,10 +36,18 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
       {/* Tilbage knap fjernes fra related singleart */}
       {eventId && (
         <div className="sticky top-10 bg-white w-fit lg:hidden cursor-pointer mt-4">
-          <BtnWithArrow direction="left" onClick={handleBackClick}>
-            <span className="uppercase">{`Tilbage til ${
+          {/* <BtnWithArrow direction="left" onClick={handleBackClick}>
+            <span className="uppercase text-left block">{`Tilbage til ${
               currentEvent?.title || "event"
             }`}</span>
+          </BtnWithArrow> */}
+          <BtnWithArrow direction="left" onClick={handleBackClick}>
+            <span className="uppercase text-left block">
+              Tilbage til{" "}
+              <span className="font-semibold">
+                {currentEvent?.title || "event"}
+              </span>
+            </span>
           </BtnWithArrow>
         </div>
       )}
@@ -47,10 +55,18 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
       {eventId && (
         <div className="lg:col-span-4 self-start lg:sticky top-10">
           <div className="sticky top-10 bg-white w-fit cursor-pointer hidden lg:block mb-4">
-            <BtnWithArrow direction="left" onClick={handleBackClick}>
-              <span className="uppercase">{`Tilbage til ${
+            {/* <BtnWithArrow direction="left" onClick={handleBackClick}>
+              <span className="uppercase text-left block">{`Tilbage til ${
                 currentEvent?.title || "event"
               }`}</span>
+            </BtnWithArrow> */}
+            <BtnWithArrow direction="left" onClick={handleBackClick}>
+              <span className="uppercase text-left block">
+                Tilbage til{" "}
+                <span className="font-semibold">
+                  {currentEvent?.title || "event"}
+                </span>
+              </span>
             </BtnWithArrow>
           </div>
           <SingleArtTextContent
