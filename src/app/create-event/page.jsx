@@ -14,10 +14,9 @@ import BtnWithArrow from "@/components/BtnWithArrow";
 import { RxCross2 } from "react-icons/rx";
 
 export default function Page() {
-  const { dates, locations, isLocationOccupied, createNewEvent } =
-    useEventFormLogic();
+  const { locations, createNewEvent } = useEventFormLogic();
 
-//States til form og navigation af steps
+  //States til form og navigation af steps
   const [selectedArtworks, setSelectedArtworks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -31,7 +30,7 @@ export default function Page() {
   //Prompt: Hvordan laver jeg min opret event så den er i to steps, så man først udfylder formularen og derefter vælger artworks
   // Gemmer data fra step 1 for at kunne bruge det i step 2 og ved oprettelse
   const [formData, setFormData] = useState({});
-  const [artworkError, setArtworkError] = useState("");
+  const [artworkError, setArtworkError] = useState(null);
 
   // Find max antal artworks baseret på valgt lokation
   const maxSelection = selectedLocation
@@ -49,7 +48,7 @@ export default function Page() {
     setSelectedLocation(dataFromForm.locationId); //Tager den valgte lokation fra form så den kan bruges i ArtworkList
     setStep(2);
   };
-  
+
   //Gør så knap loader i minimum 1 sekund
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -65,13 +64,21 @@ export default function Page() {
       return;
     }
 
+    //Sørger for at man ikke kan gemme hvis max værker overstiger pladsen på lokationenAdd commentMore actions
+    if (selectedArtworks.length > maxSelection) {
+      setArtworkError(
+        `Du kan maks vælge ${maxSelection} værker til denne lokation.`
+      );
+      return;
+    }
+
     setArtworkError("");
     setIsSubmitting(true);
 
-  //Prompt: Hvordan får jeg min form til at sende den seneste data med når man opretter et event,
-  // hvis man har ændret i den, efter man er gået videre til næste step (vælg værker)?
+    //Prompt: Hvordan får jeg min form til at sende den seneste data med når man opretter et event,
+    // hvis man har ændret i den, efter man er gået videre til næste step (vælg værker)?
 
-  // Henter den nyeste formdata i tilfælde af at brugeren har lavet ændringer efter step 1
+    // Henter den nyeste formdata i tilfælde af at brugeren har lavet ændringer efter step 1
     const latestFormData = formRef.current?.getValues?.() ?? {};
 
     //Samler data fra form og artworks
@@ -90,7 +97,14 @@ export default function Page() {
       //Vis popup ved oprettelse med link til eventet
       setEventLink(`/events/${createdEvent.id}`);
       setShowPopup(true);
-      // evt. nulstil formular hvis ønsket
+
+      //Nulstil formular og artworksAdd commentMore actions
+      setSelectedArtworks([]);
+      setStep(1);
+      setFormData({});
+      setSelectedDate(null);
+      setSelectedLocation(null);
+      formRef.current?.reset();
     } catch (error) {
       console.error("Fejl ved oprettelse af event:", error);
     } finally {

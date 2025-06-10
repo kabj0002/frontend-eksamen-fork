@@ -23,7 +23,9 @@ const EditIcon = ({ event, onEdit, children }) => {
         aria-label="Rediger event"
       >
         <div className="flex flex-row items-end justify-center gap-2 cursor-pointer">
-          <span className="text-primary-red text-xl">{children}</span>
+          <span className="text-primary-red text-sm md:text-lg">
+            {children}
+          </span>
           <FiEdit3
             size={32}
             strokeWidth={1.5}

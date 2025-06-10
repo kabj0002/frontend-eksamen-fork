@@ -6,24 +6,12 @@
 import { LuMapPin, LuClock4 } from "react-icons/lu";
 import { FiCalendar } from "react-icons/fi";
 import { formatDate } from "@/utils/formatDate";
-import { SignedIn } from "@clerk/nextjs";
-import EditIcon from "../edit_create_event/EditIcon";
 
 const Eventinfo = ({ event, onEdit }) => {
   const formattedDate = formatDate(event.date);
 
   return (
     <div className="flex flex-col">
-      <SignedIn>
-        <div className="flex justify-center my-4">
-          <EditIcon event={event} onEdit={onEdit}>
-            <div className="text-sm md:text-lg ">REDIGER EVENT</div>
-          </EditIcon>
-        </div>
-      </SignedIn>
-      <h1 className="text-center mb-5 first-letter:capitalize">
-        {event.title}
-      </h1>
       <p className="mx-auto text-center first-letter:capitalize">
         {event.description}
       </p>

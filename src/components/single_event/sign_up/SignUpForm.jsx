@@ -110,7 +110,6 @@ const SignUpForm = () => {
       className="bg-white shadow-[0_0_15px_rgba(0,0,0,0.2)] rounded-xl px-8 py-6 m-8 max-w-sm w-full mx-auto flex flex-col"
       onSubmit={handleConfirm}
     >
-      Add commentMore actions
       <h3 className="font-semibold text-center text-lg mb-6">
         Tilmeld dig gratis
       </h3>

@@ -86,10 +86,12 @@ const EventForm = ({
   // hvis man har ændret i den, efter man er gået videre til næste step (vælg værker)
   useEffect(() => {
     if (formRef) {
-      //får fromRef fra page som prop
-      formRef.current = { getValues }; //formRef.current sættes som objekt via getValues, så page har adgang til det
+      //får formRef fra page som propAdd commentMore actions
+      // formRef.current sættes til et objekt med funktionerne getValues og reset fra useForm
+      // Det gør det muligt for page(parent) at tilgå disse funktioner via formRef.current
+      formRef.current = { getValues, reset };
     }
-  }, [formRef, getValues]);
+  }, [formRef, getValues, reset]);
 
   return (
     <>

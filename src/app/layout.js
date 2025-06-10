@@ -23,7 +23,7 @@ const montserrat = Montserrat({
 export const metadata = {
   title: "Modernia Curators",
   icons: {
-    icon: "../imgs/favicon-32x32.png", //OBS pga fejl mappe-sti blev denne ikke vist i Netlify, kun i localhost ved aflevering da jeg ryddede op inden aflevering :()
+    icon: "/imgs/favicon-32x32.png", //OBS pga fejl mappe-sti blev denne ikke vist i Netlify, kun i localhost ved aflevering da jeg ryddede op inden aflevering :()
   },
 };
 
