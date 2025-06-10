@@ -12,14 +12,13 @@ import { useArtworksLogic } from "@/utils/artworksLogic";
 // import SearchBar from "./SearchBar";
 
 const ArtworkList = ({
-  blurred = false, 
+  blurred = false,
   selectedArtworks,
   setSelectedArtworks,
   selectedDate,
   maxSelection,
 }) => {
-
-    //Henter alle funktioner vi skal bruge fra useArtworksLogic
+  //Henter alle funktioner vi skal bruge fra useArtworksLogic
   const {
     displayedArtworks,
     currentPage,
@@ -213,7 +212,7 @@ const ArtworkList = ({
                   height={100}
                   className="rounded w-full h-auto"
                 />
-                <LuTrash2 className="absolute right-1 top-1 text-lg text-white m-1 w-7 h-auto stroke-1" />
+                <LuTrash2 className="absolute right-1 top-1 text-lg text-primary-red stroke-2 fill-white m-1 w-7 h-auto" />
                 <p className="truncate !text-sm">{title}</p>
               </div>
             );

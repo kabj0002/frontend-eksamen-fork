@@ -11,7 +11,7 @@ const Eventinfo = ({ event, onEdit }) => {
   const formattedDate = formatDate(event.date);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col pt-10 sm:pt-12 md:pt-14 lg:pt-16">
       <p className="mx-auto text-center first-letter:capitalize">
         {event.description}
       </p>

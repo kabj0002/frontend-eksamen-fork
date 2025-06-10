@@ -81,7 +81,7 @@ export default function Page() {
       <h1 className="mb-2 sm:mb-3">Events</h1>
       <p>
         Oplev spændende kunstevents med fokus på modernismen – over hele
-        Danmark.Add commentMore actions Vi glæder os til at byde dig velkommen!
+        Danmark. Vi glæder os til at byde dig velkommen!
       </p>
       <div>
         <div className="border-2 border-black w-full my-6 sm:my-10 z-50 self-start sticky sm:top-37 md:top-41 lg:top-45"></div>

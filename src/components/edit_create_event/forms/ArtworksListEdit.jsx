@@ -224,7 +224,7 @@ const ArtworkListEdit = ({
                   height={100}
                   className="rounded object-cover w-fit"
                 />
-                <LuTrash2 className="absolute right-1 top-1 text-2xl text-white m-1 w-8 h-auto stroke-1" />
+                <LuTrash2 className="absolute right-1 top-1 text-2xl text-primary-red stroke-2 fill-white m-1 w-8 h-auto" />
                 <p className="truncate !text-sm">{title}</p>
               </div>
             );

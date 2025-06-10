@@ -218,7 +218,7 @@ const SignUpForm = () => {
         className={`w-full rounded-md py-2 text-white font-semibold transition ${
           isSoldOut
             ? "bg-gray-300 cursor-not-allowed hover:bg-gray-300 border-none transform-none transition-none"
-            : "bg-primary-red hover:bg-red-600"
+            : "bg-primary-red hover:bg-primary-red-hover2"
         }`}
       >
         Bekræft reservation
