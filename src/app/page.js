@@ -91,10 +91,10 @@ export default function Home() {
       {loading ? (
         <div className="fixed top-0 left-0 w-full h-screen z-[-1]">
           <Skeleton
-            baseColor="#c9c9c9"
-            highlightColor="#fdfdfd"
+            // baseColor="#c9c9c9"
+            // highlightColor="#fdfdfd"
             className="react-loading-skeleton block h-full w-full"
-            borderRadius={0}
+            // borderRadius={0}
           />
         </div>
       ) : (

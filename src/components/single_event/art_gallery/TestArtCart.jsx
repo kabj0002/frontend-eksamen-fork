@@ -8,6 +8,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchArtworkById } from "../../../api-mappe/SmkApiKald";
 import BtnWithArrow from "@/components/BtnWithArrow";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 
 const TestArtCart = ({ artworkId, eventId }) => {
   const [artwork, setArtwork] = useState(null);
@@ -15,6 +18,9 @@ const TestArtCart = ({ artworkId, eventId }) => {
   //henter kunstværket baseret på artworkId (hentet fra api-mappen)
   useEffect(() => {
     const fetchArtwork = async () => {
+      //simulere en langsom server for at se skeleton loading funktion
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
+
       try {
         const data = await fetchArtworkById(artworkId);
         if (data.items && data.items.length > 0) {
@@ -28,14 +34,26 @@ const TestArtCart = ({ artworkId, eventId }) => {
   }, [artworkId]);
 
   if (!artwork) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-row gap-4">
+        <Skeleton height={200} width={300} />
+        <Skeleton height={300} width={200} />
+        <Skeleton height={250} width={250} />
+        <Skeleton height={300} width={200} />
+        <Skeleton height={200} width={300} />
+      </div>
+    );
   }
 
   // Dynamisk link baseret på eventId og artwork object_number
   const linkHref = `/events/${eventId}/artwork/${artwork.object_number}`;
 
   return (
-    <Link href={linkHref} className="relative flex items-center justify-center overflow-hidden rounded-sm shadow-lg bg-white max-w-[420px] min-w-[250px] cursor-pointer" style={{ padding: 0 }}>
+    <Link
+      href={linkHref}
+      className="relative flex items-center justify-center overflow-hidden rounded-sm shadow-lg bg-white max-w-[420px] min-w-[250px] cursor-pointer"
+      style={{ padding: 0 }}
+    >
       <Image
         src={artwork.image_thumbnail || "/imgs/placeholder.jpg"}
         alt={artwork.titles?.[0]?.title || "Artwork"}

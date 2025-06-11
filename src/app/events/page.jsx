@@ -9,6 +9,9 @@ import SelectCity from "@/components/events/SelectCity";
 import normalizeCity from "@/utils/normalizeCity";
 import { fetchEvents } from "../../api-mappe/EventsApiKald";
 import { IoIosArrowDown } from "react-icons/io";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 
 export default function Page() {
   const [events, setEvents] = useState([]);
@@ -17,8 +20,11 @@ export default function Page() {
 
   useEffect(() => {
     const getEvents = async () => {
+      //simulere en langsom server for at se skeleton loading funktion
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
+
       try {
-        const data = await fetchEvents(); 
+        const data = await fetchEvents();
         setEvents(data);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -117,9 +123,43 @@ export default function Page() {
             />
           </div>
 
+          {/* <div className="flex flex-col gap-4">
+            {loading ? (
+              <p className="mt-2 italic">Indlæser events... </p>
+            ) : filteredEvents.length === 0 ? (
+              <p className="mt-2 italic">
+                Ingen events fundet på den valgte lokation...
+              </p>
+            ) : (
+              filteredEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  onDeleted={() => handleDeleted(event.id)}
+                  onEdit={handleEdit}
+                >
+                  <Skeleton
+                    baseColor="#c9c9c9"
+                    highlightColor="#fdfdfd"
+                    className="react-loading-skeleton block h-full w-full"
+                    borderRadius={0}
+                  />
+                </EventCard>
+              ))
+            )}
+          </div> */}
           <div className="flex flex-col gap-4">
             {loading ? (
-              <p className="mt-2 italic">Indlæser events...</p>
+              // Viser 3 skeletter mens siden loader
+              <>
+                <p className="mt-2 italic">Indlæser events... </p>
+
+                <Skeleton height={300} count={3} />
+
+                {/* <Skeleton height={300} />
+                <Skeleton height={300} />
+                <Skeleton height={300} /> */}
+              </>
             ) : filteredEvents.length === 0 ? (
               <p className="mt-2 italic">
                 Ingen events fundet på den valgte lokation...
