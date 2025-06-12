@@ -63,7 +63,10 @@ const SingleArtTextContent = ({
   const relatedEvents = allEvents.filter((event) =>
     event.artworkIds?.includes(data.object_number)
   );
-  const sortedColors = [...data.colors].sort((a, b) => {
+
+  //Hvis data.colors ikke eksisterer så brug et tomt array
+  const colors = data.colors || [];
+  const sortedColors = [...colors].sort((a, b) => {
     const hslA = hexToHSL(a);
     const hslB = hexToHSL(b);
     return hslA.h - hslB.h;

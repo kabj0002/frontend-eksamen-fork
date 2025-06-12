@@ -7,9 +7,9 @@ export const useArtworksLogic = (
   selectedDate,
   selectedArtworks,
   setSelectedArtworks,
-  selectedLocation,
   maxSelection,
-  excludeEventId
+  excludeEventId,
+  selectedLocation //PLacerer nederst for at forhindre fejl på edit event (slet og tilføj igen)
 ) => {
   const [artworks, setArtworks] = useState([]);
   const [events, setEvents] = useState([]);
