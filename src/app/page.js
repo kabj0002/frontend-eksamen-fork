@@ -44,14 +44,9 @@ async function fetchRandomImage() {
 export default function Home() {
   const [imageUrl, setImageUrl] = useState("/imgs/placeholder.jpg");
 
-  // useEffect(() => {
-  //   // Hent første billede ved load
-  //   fetchRandomImage().then((url) => setImageUrl(url));
-  // }, []);
-
   //Loading tilstand (skeleton loading)
   const [loading, setLoading] = useState(true);
-  //Håndterer loading state
+  //Håndterer loading state (henter første billede)
   useEffect(() => {
     setLoading(true); // starter med loading
     fetchRandomImage().then((url) => {
@@ -59,11 +54,6 @@ export default function Home() {
       setLoading(false); // slutter når billedet er klar
     });
   }, []);
-
-  // const handleNewImage = async () => {
-  //   const newImage = await fetchRandomImage();
-  //   setImageUrl(newImage);
-  // };
 
   //Håndterer handleNewImage state
   const handleNewImage = async () => {
@@ -75,7 +65,9 @@ export default function Home() {
 
   //Scroll effects
   const { scrollY } = useScroll();
+  //Ved scroll fra 150-350px begynder button at fade fra 1 til 0.
   const topButtonOpacity = useTransform(scrollY, [0, 150, 350], [1, 1, 0]);
+  //Ved scroll af 400px er knappen rykket 50 px op
   const topButtonTranslateY = useTransform(scrollY, [0, 400], [0, -50]);
   const contentOpacity = useTransform(scrollY, [400, 800, 1300], [0, 1, 0]);
   const contentTranslateY = useTransform(scrollY, [400, 800], [50, 0]);

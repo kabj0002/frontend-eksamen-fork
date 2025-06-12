@@ -1,6 +1,7 @@
 "use client";
 
 //Matilde
+//Her ligger 3 komponenter: input, textarea og select
 
 import React from "react";
 

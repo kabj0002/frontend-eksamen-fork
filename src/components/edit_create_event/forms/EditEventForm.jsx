@@ -1,6 +1,6 @@
 //Matilde
 //Brugt AI til at sørge for form henter data og præudfylder form med det fra eventet
-//Debug prompt: Hvordan får jeg den til at vise og gemme den valgte dato og lokation fra eventet i mine select komponenter 
+//Debug prompt: Hvordan får jeg den til at vise og gemme den valgte dato og lokation fra eventet i mine select komponenter
 // gennem value, giver det mening at bruge Controller fra RHF?
 
 import React, { useEffect } from "react";
