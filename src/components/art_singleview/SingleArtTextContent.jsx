@@ -6,12 +6,10 @@
 
 "use client";
 import Link from "next/link";
-import { useState } from "react"; //Bruger til læs mere/mindre
+import { useState } from "react";
 import BtnWithArrow from "../BtnWithArrow";
 
-//Rydder op i colors (Fået hjælp af AI)
 function hexToHSL(hex) {
-  // Omregning af hex til RGB
   let r = 0,
     g = 0,
     b = 0;
@@ -64,7 +62,6 @@ const SingleArtTextContent = ({
     event.artworkIds?.includes(data.object_number)
   );
 
-  //Hvis data.colors ikke eksisterer så brug et tomt array
   const colors = data.colors || [];
   const sortedColors = [...colors].sort((a, b) => {
     const hslA = hexToHSL(a);
@@ -72,9 +69,20 @@ const SingleArtTextContent = ({
     return hslA.h - hslB.h;
   });
 
+  //react state hook til "læs mere" knap
+  const [expanded, setExpanded] = useState(false);
+
+  // Klargør tekst-afsnit
+  let paragraphs = [];
+  if (data.production?.[0]?.creator_history) {
+    const sentences = data.production[0].creator_history.split(/\. /);
+    for (let i = 0; i < sentences.length; i += 10) {
+      paragraphs.push(sentences.slice(i, i + 10).join(". "));
+    }
+  }
+
   return (
     <div className="w-full">
-      {/* Metadata: Kun vis hvis ikke onlyContent */}
       {!onlyContent && (
         <div>
           <h3 className="italic mb-4">
@@ -126,13 +134,10 @@ const SingleArtTextContent = ({
         </div>
       )}
 
-      {/* Højre kolonne indhold: vis kun hvis ikke onlyMeta */}
       {!onlyMeta && (
         <div className="pt-5 sm:pt-8 md:pt-12">
           <h5 className="mt-2 md:mt-4">Se kunstværket på følgende events:</h5>
-          {/*Rettelse af Maja: Den meget lange importerede tekst har ingen breaks og ser uoverskueligt ud. Vi ville gerne tilføje nogle breaks så det var mere letlæseligt */}
-          {/*prompt til AI: "Er det muligt at skabe et break i teksten ved hvert 10 punktum så det bliver delt mere op i afsnit" */}
-          <ul className="mt-2 md:mt-4 list-none list-inside ">
+          <ul className="mt-2 md:mt-4 list-none list-inside">
             {relatedEvents.length > 0 ? (
               relatedEvents.map((event) => (
                 <li key={event.id}>
@@ -144,7 +149,7 @@ const SingleArtTextContent = ({
                   </Link>
                   <span>
                     {" "}
-                    — {/* Ændrer til dansk dato */}
+                    —{" "}
                     {new Date(event.date).toLocaleDateString("da-DK", {
                       day: "2-digit",
                       month: "long",
@@ -168,7 +173,6 @@ const SingleArtTextContent = ({
               data.exhibitions.map((exh, i) => (
                 <li key={i}>
                   <span className="font-semibold">{exh.exhibition}</span> —{" "}
-                  {/* Ændrer til dansk dato */}
                   {new Date(exh.date_start).toLocaleDateString("da-DK", {
                     day: "2-digit",
                     month: "long",
@@ -189,42 +193,25 @@ const SingleArtTextContent = ({
           </ul>
 
           <h5 className="mt-6 md:mt-8">Kunstnerens historie:</h5>
-          {data.production?.[0]?.creator_history ? (
+          {paragraphs.length > 0 ? (
             <div className="mt-2 md:mt-4">
-              {(() => {
-                // Split på punktum efterfulgt af mellemrum
-                const sentences =
-                  data.production[0].creator_history.split(/\. /);
-                // Saml 10 sætninger pr. afsnit
-                const paragraphs = [];
-                for (let i = 0; i < sentences.length; i += 10) {
-                  paragraphs.push(sentences.slice(i, i + 10).join(". "));
-                }
-
-                const [expanded, setExpanded] = useState(false);
-
-                const toggleExpanded = () => setExpanded((prev) => !prev);
-
-                return (
-                  <>
-                    {(expanded ? paragraphs : [paragraphs[0]]).map(
-                      (paragraph, idx) => (
-                        <p key={idx} className="mb-2">
-                          {paragraph.trim()}
-                          {paragraph.endsWith(".") ? "" : "."}
-                        </p>
-                      )
-                    )}
-                    {paragraphs.length > 1 && (
-                      <BtnWithArrow toggleable={true}>
-                        <span onClick={toggleExpanded}>
-                          {expanded ? "LÆS MINDRE" : "LÆS MERE"}
-                        </span>
-                      </BtnWithArrow>
-                    )}
-                  </>
-                );
-              })()}
+              {(expanded ? paragraphs : [paragraphs[0]]).map(
+                (paragraph, idx) => (
+                  <p key={idx} className="mb-2">
+                    {paragraph.trim()}
+                    {paragraph.endsWith(".") ? "" : "."}
+                  </p>
+                )
+              )}
+              {paragraphs.length > 1 && (
+                //Giver arrow direction så den skifter
+                <BtnWithArrow
+                  onClick={() => setExpanded(!expanded)}
+                  direction={expanded ? "left" : "right"}
+                >
+                  {expanded ? "LÆS MINDRE" : "LÆS MERE"}
+                </BtnWithArrow>
+              )}
             </div>
           ) : (
             <p className="mt-2 md:mt-4">Ukendt historie</p>
