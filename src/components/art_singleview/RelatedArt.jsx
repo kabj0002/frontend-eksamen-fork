@@ -5,6 +5,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
+import Skeleton from "react-loading-skeleton";
 
 const RelatedArt = ({ artworkId }) => {
   const [related, setRelated] = useState([]);
@@ -86,7 +87,8 @@ const RelatedArt = ({ artworkId }) => {
                 >
                   <Image
                     src={item.image_thumbnail}
-                    alt={item.title || "related art"}
+                    // alt={item.title || "related art"}
+                    alt={item.title || <Skeleton />}
                     width={160}
                     height={120}
                     className="object-cover rounded shadow cursor-pointer"

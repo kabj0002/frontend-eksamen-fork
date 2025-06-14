@@ -116,9 +116,23 @@
 //server component
 import ArtworkPageContentClient from "./ArtworkPageContentClient";
 import { fetchEvents } from "@/api-mappe/EventsApiKald";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 
-export default async function ArtworkPageContent({ artworkId, eventId }) {
-  if (!artworkId) return <div>Ugyldige parametre</div>;
+export default function ArtworkPageContent({ artworkId, eventId }) {
+  const [artwork, setArtwork] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!artworkId) return;
+
+      try {
+        //simulere en langsom server for at se skeleton loading funktion
+        await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
 
   const res = await fetch(
     `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
