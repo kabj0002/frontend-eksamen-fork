@@ -12,22 +12,17 @@ import { IoIosArrowDown } from "react-icons/io";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
+import useMinimumLoading from "@/utils/useMinimumLoading";
 
 export default function Page() {
   const [events, setEvents] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
 
-  // Start 3 sekunders timer
-  const [showSkeleton, setShowSkeleton] = useState(true);
+  // Track loading
+  const [loading, setLoading] = useState(true);
 
-  //simulere en langsom server for at se skeleton loading funktion
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSkeleton(false); // efter 3 sek vises billedet
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Brug hook til minimum 3 sekunders loading
+  const showSkeleton = useMinimumLoading(loading, 3000);
 
   useEffect(() => {
     const getEvents = async () => {
@@ -47,7 +42,7 @@ export default function Page() {
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
-        //setShowSkeleton(false); //Gør at den stopper så snart load er færdig selv om det ikke er gået 3 sekunder
+        setLoading(false);
       }
     };
 

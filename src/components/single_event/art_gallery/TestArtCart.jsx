@@ -11,28 +11,20 @@ import BtnWithArrow from "@/components/BtnWithArrow";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
+import useMinimumLoading from "@/utils/useMinimumLoading";
 
 const TestArtCart = ({ artworkId, eventId }) => {
   const [artwork, setArtwork] = useState(null); //holder data om værketAdd commentMore actions
   const [isHovered, setIsHovered] = useState(false); //styler visuelle ændringer ved hover
+  const [loading, setLoading] = useState(true);
 
-  // Start 3 sekunders timer
-  const [showSkeleton, setShowSkeleton] = useState(true);
-
-  //simulere en langsom server for at se skeleton loading funktion
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSkeleton(false); // efter 3 sek vises billedet
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Bruger min custom hook til at simulerer minimum 3 sekunders loading
+  const showSkeleton = useMinimumLoading(loading, 3000);
 
   //Henter data om værket baseret på dets ID
   useEffect(() => {
     const fetchArtwork = async () => {
-      //simulere en langsom server for at se skeleton loading funktion
-      //await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
+      setLoading(true); // Start loading når vi henter
 
       try {
         const data = await fetchArtworkById(artworkId);
@@ -41,6 +33,8 @@ const TestArtCart = ({ artworkId, eventId }) => {
         }
       } catch (error) {
         console.error("Error fetching artwork:", error); //fejl hvis API-kald fejler
+      } finally {
+        setLoading(false); // Stop loading når data er hentet (eller fejl)
       }
     };
     fetchArtwork(); //kalder funktionen når komponenten loadesAdd commentMore actions

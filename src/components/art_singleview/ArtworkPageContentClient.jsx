@@ -11,6 +11,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 import { useState, useEffect } from "react";
+import useMinimumLoading from "@/utils/useMinimumLoading";
 
 export default function ArtworkPageContentClient({ artwork, eventId, events }) {
   const router = useRouter();
@@ -36,16 +37,20 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
   //Tilbage til event knap
   const currentEvent = events.find((event) => event.id === eventId);
 
-  // Start 3 sekunders timer
-  const [showSkeleton, setShowSkeleton] = useState(true);
+  // Track loading baseret på om artwork findes eller ej
+  const [loading, setLoading] = useState(true);
 
+  // Når artwork ændrer sig, stop loading
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSkeleton(false); // efter 3 sek vises billedet
-    }, 3000);
+    if (artwork) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [artwork]);
 
-    return () => clearTimeout(timer);
-  }, []);
+  // Bruger hook til minimum 3 sekunders loading
+  const showSkeleton = useMinimumLoading(loading, 3000);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

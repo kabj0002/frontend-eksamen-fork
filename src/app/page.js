@@ -156,6 +156,7 @@ import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
+import useMinimumLoading from "@/utils/useMinimumLoading";
 
 export default function Home() {
   const [works, setWorks] = useState([]);
@@ -166,17 +167,11 @@ export default function Home() {
 
   const { openSignIn } = useClerk();
 
-  // Start 3 sekunders timer
-  const [showSkeleton, setShowSkeleton] = useState(true);
+  // Track loading
+  const [loading, setLoading] = useState(true);
 
-  // //Simulerer 3 sekunder loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSkeleton(false); // efter 3 sek vises billedet
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Brug hook til minimum 3 sekunders loading
+  const showSkeleton = useMinimumLoading(loading, 3000);
 
   // Hent værker på mount
   useEffect(() => {
@@ -185,6 +180,7 @@ export default function Home() {
       setWorks(data);
       setCurrentIndex(0);
       setFade(true); // Fade ind på første billede
+      setLoading(false);
     });
   }, []);
 
