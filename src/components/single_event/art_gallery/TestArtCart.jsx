@@ -16,11 +16,23 @@ const TestArtCart = ({ artworkId, eventId }) => {
   const [artwork, setArtwork] = useState(null); //holder data om værketAdd commentMore actions
   const [isHovered, setIsHovered] = useState(false); //styler visuelle ændringer ved hover
 
+  // Start 3 sekunders timer
+  const [showSkeleton, setShowSkeleton] = useState(true);
+
+  //simulere en langsom server for at se skeleton loading funktion
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSkeleton(false); // efter 3 sek vises billedet
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   //Henter data om værket baseret på dets ID
   useEffect(() => {
     const fetchArtwork = async () => {
       //simulere en langsom server for at se skeleton loading funktion
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
+      //await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
 
       try {
         const data = await fetchArtworkById(artworkId);
@@ -34,7 +46,7 @@ const TestArtCart = ({ artworkId, eventId }) => {
     fetchArtwork(); //kalder funktionen når komponenten loadesAdd commentMore actions
   }, [artworkId]); //kører igen hvis artworkId ændrer sig
 
-  if (!artwork) {
+  if (showSkeleton || !artwork) {
     return (
       <div className="flex flex-row gap-4">
         <Skeleton height={200} width={300} />

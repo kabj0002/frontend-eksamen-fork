@@ -96,8 +96,9 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
       <div className="lg:col-span-8 space-y-8">
         <>
           {showSkeleton ? (
-            <div className="w-full max-w-full h-auto lg:w-[700px]">
-              <Skeleton height={500} width={700} />
+            //Responsiv skeleton
+            <div className="w-full max-w-full aspect-[7/5]">
+              <Skeleton width="100%" height="100%" />
             </div>
           ) : (
             <div>
@@ -110,7 +111,6 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
                     height={1600}
                     quality={90}
                     className="h-full w-auto object-contain mx-auto"
-                    priority
                   />
                 </div>
               ) : (
@@ -122,7 +122,6 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
                     height={1200}
                     quality={90}
                     className="w-full h-auto object-contain mx-auto"
-                    priority
                   />
                 </div>
               )}

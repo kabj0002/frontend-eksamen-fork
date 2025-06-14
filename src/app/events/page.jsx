@@ -16,15 +16,23 @@ import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 export default function Page() {
   const [events, setEvents] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  // Start 3 sekunders timer
+  const [showSkeleton, setShowSkeleton] = useState(true);
+
+  //simulere en langsom server for at se skeleton loading funktion
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSkeleton(false); // efter 3 sek vises billedet
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const getEvents = async () => {
-      //simulere en langsom server for at se skeleton loading funktion
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
-
       try {
-        //Gammel - sætter events ind i den rækkefølge de er oprettetAdd commentMore actions
+        //Gammel - sætter events ind i den rækkefølge de er oprettet
         // const data = await fetchEvents();
         // setEvents(data);
 
@@ -39,7 +47,7 @@ export default function Page() {
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
-        setLoading(false);
+        //setShowSkeleton(false); //Gør at den stopper så snart load er færdig selv om det ikke er gået 3 sekunder
       }
     };
 
@@ -128,36 +136,11 @@ export default function Page() {
             />
           </div>
 
-          {/* <div className="flex flex-col gap-4">
-            {loading ? (
-              <p className="mt-2 italic">Indlæser events... </p>
-            ) : filteredEvents.length === 0 ? (
-              <p className="mt-2 italic">
-                Ingen events fundet på den valgte lokation...
-              </p>
-            ) : (
-              filteredEvents.map((event) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  onDeleted={() => handleDeleted(event.id)}
-                  onEdit={handleEdit}
-                >
-                  <Skeleton
-                    baseColor="#c9c9c9"
-                    highlightColor="#fdfdfd"
-                    className="react-loading-skeleton block h-full w-full"
-                    borderRadius={0}
-                  />
-                </EventCard>
-              ))
-            )}
-          </div> */}
           <div className="flex flex-col gap-4">
-            {loading ? (
+            {showSkeleton ? (
               // Viser 3 skeletter mens siden loader
               <>
-                <p className="mt-2 italic">Indlæser events... </p>
+                {/* <p className="mt-2 italic">Indlæser events... </p> */}
 
                 <Skeleton height={300} count={3} />
 

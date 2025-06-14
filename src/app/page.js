@@ -169,7 +169,7 @@ export default function Home() {
   // Start 3 sekunders timer
   const [showSkeleton, setShowSkeleton] = useState(true);
 
-  //Simulerer 3 sekunder loading
+  // //Simulerer 3 sekunder loading
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSkeleton(false); // efter 3 sek vises billedet
