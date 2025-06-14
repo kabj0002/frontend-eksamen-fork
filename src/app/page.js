@@ -153,6 +153,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchSelectedWorks } from "../api-mappe/SmkApiKald";
 import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 
 export default function Home() {
   const [works, setWorks] = useState([]);
@@ -162,6 +165,18 @@ export default function Home() {
   const intervalRef = useRef(null);
 
   const { openSignIn } = useClerk();
+
+  // Start 3 sekunders timer
+  const [showSkeleton, setShowSkeleton] = useState(true);
+
+  //Simulerer 3 sekunder loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSkeleton(false); // efter 3 sek vises billedet
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Hent værker på mount
   useEffect(() => {
@@ -212,45 +227,52 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden relative">
-      {/* Baggrundsbilleder med smooth fade og pulse */}
-      <div className="fixed inset-0 -z-10">
-        {works.map((work, idx) => (
-          <motion.div
-            key={work.image}
-            className="absolute inset-0"
-            initial={false}
-            animate={{
-              opacity:
-                idx === currentIndex && fade
-                  ? 1
-                  : idx === prevIndex && !fade
-                  ? 1
-                  : 0,
-              // scale skal ALTID køre på det aktuelle billede
-              scale: idx === currentIndex ? [1.05, 1, 1.05] : 1,
-            }}
-            transition={{
-              opacity: { duration: 1.2 },
-              scale: {
-                duration: 8,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut",
-              },
-            }}
-            style={{ pointerEvents: "none" }}
-          >
-            <Image
-              src={work.image}
-              alt={work.title}
-              fill
-              style={{ objectFit: "cover" }}
-              priority={idx === currentIndex}
-            />
-          </motion.div>
-        ))}
-        {works.length === 0 && <div className="w-full h-full bg-gray-200" />}
-      </div>
+      {/* Loading skeleton */}
+      {showSkeleton ? (
+        <div className="w-screen h-screen fixed inset-0 -z-10">
+          <Skeleton height={"100vh"} width={"100vw"} />
+        </div>
+      ) : (
+        <div className="fixed inset-0 -z-10">
+          {/* Baggrundsbilleder med smooth fade og pulse */}
+          {works.map((work, idx) => (
+            <motion.div
+              key={work.image}
+              className="absolute inset-0"
+              initial={false}
+              animate={{
+                opacity:
+                  idx === currentIndex && fade
+                    ? 1
+                    : idx === prevIndex && !fade
+                    ? 1
+                    : 0,
+                // scale skal ALTID køre på det aktuelle billede
+                scale: idx === currentIndex ? [1.05, 1, 1.05] : 1,
+              }}
+              transition={{
+                opacity: { duration: 1.2 },
+                scale: {
+                  duration: 8,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                },
+              }}
+              style={{ pointerEvents: "none" }}
+            >
+              <Image
+                src={work.image}
+                alt={work.title}
+                fill
+                style={{ objectFit: "cover" }}
+                priority={idx === currentIndex}
+              />
+            </motion.div>
+          ))}
+          {works.length === 0 && <div className="w-full h-full bg-gray-200" />}
+        </div>
+      )}
 
       {/* Overskrift og boks med tekst og knap */}
       <h1 className="!text-5xl md:!text-7xl lg:!text-8xl !font-semibold !text-white drop-shadow-lg mb-6 md:mb-8 uppercase text-left leading-none ml-4 md:ml-16 mt-16 md:mt-32">

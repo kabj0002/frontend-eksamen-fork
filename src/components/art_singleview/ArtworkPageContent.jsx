@@ -113,47 +113,83 @@
 //   );
 // }
 
-//server component
+// server component
+// import ArtworkPageContentClient from "./ArtworkPageContentClient";
+// import { fetchEvents } from "@/api-mappe/EventsApiKald";
+
+// export default async function ArtworkPageContent({ artworkId, eventId }) {
+//   if (!artworkId) {
+//     return <div>Mangler artwork ID</div>;
+//   }
+
+//   // Simuler langsom server, 3 sek loading
+//   await new Promise((resolve) => setTimeout(resolve, 3000));
+
+//   let artwork = null;
+//   let events = [];
+
+//   try {
+//     const res = await fetch(
+//       `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
+//     );
+//     const data = await res.json();
+//     artwork = data.items?.[0];
+//   } catch (error) {
+//     console.error("Fejl ved hentning af artwork:", error);
+//   }
+
+//   if (!artwork) {
+//     return <div>Kunstværk blev ikke fundet</div>;
+//   }
+
+//   try {
+//     events = await fetchEvents();
+//   } catch (error) {
+//     console.error("Kunne ikke hente events:", error);
+//   }
+
+//   return (
+//     <ArtworkPageContentClient
+//       artwork={artwork}
+//       eventId={eventId}
+//       events={events}
+//     />
+//   );
+// }
 import ArtworkPageContentClient from "./ArtworkPageContentClient";
 import { fetchEvents } from "@/api-mappe/EventsApiKald";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 
-export default function ArtworkPageContent({ artworkId, eventId }) {
-  const [artwork, setArtwork] = useState(null);
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [imageLoading, setImageLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!artworkId) return;
-
-      try {
-        //simulere en langsom server for at se skeleton loading funktion
-        await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 sekunders delay
-
-  const res = await fetch(
-    `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
-  );
-  const data = await res.json();
-  const artwork = data.items?.[0];
-
-  if (!artwork) return <div>Kunstværk blev ikke fundet</div>;
-
-  let events = [];
-  try {
-    events = await fetchEvents();
-  } catch (error) {
-    console.error("Kunne ikke hente events:", error);
+export default async function ArtworkPageContent({ artworkId, eventId }) {
+  if (!artworkId) {
+    return <div>Mangler artwork ID</div>;
   }
 
-  return (
-    <ArtworkPageContentClient
-      artwork={artwork}
-      eventId={eventId}
-      events={events}
-    />
-  );
+  // Simuler langsom server, 3 sek loading
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  try {
+    const [artworkRes, events] = await Promise.all([
+      fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`).then(
+        (res) => res.json()
+      ),
+      fetchEvents(),
+    ]);
+
+    const artwork = artworkRes.items?.[0];
+
+    if (!artwork) {
+      return <div>Kunstværk blev ikke fundet</div>;
+    }
+
+    return (
+      <ArtworkPageContentClient
+        artwork={artwork}
+        eventId={eventId}
+        events={events}
+      />
+    );
+  } catch (error) {
+    console.error("Fejl:", error);
+    return <div>Der opstod en fejl ved indlæsning</div>;
+  }
 }

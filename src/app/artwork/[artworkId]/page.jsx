@@ -1,7 +1,6 @@
 //Katinka
 //Denne side viser Singleview når man klikker på image i RelatedArt i SingleArt page
 
-//TEST FORK PUSH
 import ArtworkPageContent from "@/components/art_singleview/ArtworkPageContent";
 
 export default async function ArtworkPage({ params }) {

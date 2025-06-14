@@ -7,6 +7,10 @@ import { useRouter } from "next/navigation";
 import BtnWithArrow from "../BtnWithArrow";
 import RelatedArt from "@/components/art_singleview/RelatedArt";
 import SingleArtTextContent from "@/components/art_singleview/SingleArtTextContent";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
+import { useState, useEffect } from "react";
 
 export default function ArtworkPageContentClient({ artwork, eventId, events }) {
   const router = useRouter();
@@ -31,6 +35,17 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
 
   //Tilbage til event knap
   const currentEvent = events.find((event) => event.id === eventId);
+
+  // Start 3 sekunders timer
+  const [showSkeleton, setShowSkeleton] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSkeleton(false); // efter 3 sek vises billedet
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -79,39 +94,49 @@ export default function ArtworkPageContentClient({ artwork, eventId, events }) {
       </div>
 
       <div className="lg:col-span-8 space-y-8">
-        <div>
-          {isPortrait ? (
-            <div className="w-auto h-[70vh] max-h-[600px] lg:h-[600px] lg:max-h-[600px]">
-              <Image
-                src={artwork.image_thumbnail || "/imgs/placeholder.jpg"}
-                alt={artwork.title || "Artwork"}
-                width={1200}
-                height={1600}
-                quality={90}
-                className="h-full w-auto object-contain mx-auto"
-              />
+        <>
+          {showSkeleton ? (
+            <div className="w-full max-w-full h-auto lg:w-[700px]">
+              <Skeleton height={500} width={700} />
             </div>
           ) : (
-            <div className="w-full max-w-full h-auto lg:w-[700px]">
-              <Image
-                src={artwork.image_thumbnail || "/imgs/placeholder.jpg"}
-                alt={artwork.title || "Artwork"}
-                width={1600}
-                height={1200}
-                quality={90}
-                className="w-full h-auto object-contain mx-auto"
-              />
+            <div>
+              {isPortrait ? (
+                <div className="w-auto h-[70vh] max-h-[600px] lg:h-[600px] lg:max-h-[600px]">
+                  <Image
+                    src={artwork.image_thumbnail || "/imgs/placeholder.jpg"}
+                    alt={artwork.title || "Artwork"}
+                    width={1200}
+                    height={1600}
+                    quality={90}
+                    className="h-full w-auto object-contain mx-auto"
+                    priority
+                  />
+                </div>
+              ) : (
+                <div className="w-full max-w-full h-auto lg:w-[700px]">
+                  <Image
+                    src={artwork.image_thumbnail || "/imgs/placeholder.jpg"}
+                    alt={artwork.title || "Artwork"}
+                    width={1600}
+                    height={1200}
+                    quality={90}
+                    className="w-full h-auto object-contain mx-auto"
+                    priority
+                  />
+                </div>
+              )}
             </div>
           )}
-        </div>
 
-        <SingleArtTextContent
-          data={artwork}
-          allEvents={events}
-          eventId={eventId}
-          onlyContent={true}
-        />
-        <RelatedArt artworkId={artwork.object_number} />
+          <SingleArtTextContent
+            data={artwork}
+            allEvents={events}
+            eventId={eventId}
+            onlyContent={true}
+          />
+          <RelatedArt artworkId={artwork.object_number} />
+        </>
       </div>
     </div>
   );
