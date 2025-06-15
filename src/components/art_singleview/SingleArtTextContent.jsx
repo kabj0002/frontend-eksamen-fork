@@ -1,8 +1,6 @@
 //Katinka
 //Art Single View Text Content
-
-//OBS motion buttons
-//OBS vende pil i btnwarrow
+//Hjælp fra AI til at rydde i farver
 
 "use client";
 import Link from "next/link";
@@ -83,6 +81,8 @@ const SingleArtTextContent = ({
 
   return (
     <div className="w-full">
+      {/* Deler content op i 2 sektioner der bruges i artpagecontentclient */}
+      {/* Sticky info box */}
       {!onlyContent && (
         <div>
           <h3 className="italic mb-4">
@@ -133,7 +133,7 @@ const SingleArtTextContent = ({
           </div>
         </div>
       )}
-
+      {/* Content under billedet */}
       {!onlyMeta && (
         <div className="pt-5 sm:pt-8 md:pt-12">
           <h5 className="mt-2 md:mt-4">Se kunstværket på følgende events:</h5>

@@ -43,6 +43,7 @@ const BtnWithArrow = ({
 
       <span className="text-left leading-tight">{children}</span>
 
+      {/* Arrow peger mod højre */}
       {!isLeft && (
         <div
           className={`relative translate-y-[0.5em] ${arrowHeight} ${arrowWidth} transition-all duration-300 ${hoverWidth}`}

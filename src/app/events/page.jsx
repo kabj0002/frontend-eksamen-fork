@@ -1,3 +1,4 @@
+//Eventlist
 //Matilde
 //Katinka - dropdown til mobile
 
@@ -15,6 +16,7 @@ import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 import useMinimumLoading from "@/utils/useMinimumLoading";
 
 export default function Page() {
+  //events og selectedcities starter som et tomt array
   const [events, setEvents] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
 
@@ -70,7 +72,9 @@ export default function Page() {
           selectedCities.includes(normalizeCity(event.location.address))
         );
 
+  //Dropdown menu starter lukket
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  //Reference til dropdown elementet
   const dropdownRef = useRef(null);
 
   // Luk dropdown når man klikker udenfor

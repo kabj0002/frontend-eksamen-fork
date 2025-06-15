@@ -98,7 +98,7 @@ export default function Page() {
       setEventLink(`/events/${createdEvent.id}`);
       setShowPopup(true);
 
-      //Nulstil formular og artworksAdd commentMore actions
+      //Nulstil formular og artworks
       setSelectedArtworks([]);
       setStep(1);
       setFormData({});

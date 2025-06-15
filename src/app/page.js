@@ -148,7 +148,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import BtnWithArrow from "@/components/BtnWithArrow";
-import { useClerk, SignedIn, SignedOut } from "@clerk/nextjs";
+import { useClerk } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { fetchSelectedWorks } from "../api-mappe/SmkApiKald";

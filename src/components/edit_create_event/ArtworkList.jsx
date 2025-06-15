@@ -11,6 +11,7 @@ import { motion } from "motion/react";
 import { useArtworksLogic } from "@/utils/artworksLogic";
 // import SearchBar from "./SearchBar";
 
+//Funktionen henter props udefra
 const ArtworkList = ({
   blurred = false,
   selectedArtworks,

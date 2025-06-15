@@ -14,7 +14,7 @@ import "@/app/custom-skeleton.css"; // Min egen skeleton CSS
 import useMinimumLoading from "@/utils/useMinimumLoading";
 
 const TestArtCart = ({ artworkId, eventId }) => {
-  const [artwork, setArtwork] = useState(null); //holder data om værketAdd commentMore actions
+  const [artwork, setArtwork] = useState(null); //holder data om værket
   const [isHovered, setIsHovered] = useState(false); //styler visuelle ændringer ved hover
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +37,7 @@ const TestArtCart = ({ artworkId, eventId }) => {
         setLoading(false); // Stop loading når data er hentet (eller fejl)
       }
     };
-    fetchArtwork(); //kalder funktionen når komponenten loadesAdd commentMore actions
+    fetchArtwork(); //kalder funktionen når komponenten loades
   }, [artworkId]); //kører igen hvis artworkId ændrer sig
 
   if (showSkeleton || !artwork) {
